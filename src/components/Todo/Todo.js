@@ -1,0 +1,17 @@
+import React, { useState } from 'react';
+
+const Todo = () => {
+	const [ todoName, setTodoName ] = useState('');
+	const inputChangeHandler = event => {
+		setTodoName(event.target.value);
+	};
+	return (
+		<React.Fragment>
+			<input type='text' placeholder='Todo' value={todoName} onChange={inputChangeHandler} />
+			<button type='button'>Add</button>
+			<ul />
+		</React.Fragment>
+	);
+};
+
+export default Todo;
