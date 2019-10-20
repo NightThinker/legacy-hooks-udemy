@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import axios from 'axios';
 
 const Todo = () => {
 	const [ todoName, setTodoName ] = useState('');
@@ -9,6 +10,10 @@ const Todo = () => {
 
 	const todoAddHandler = () => {
 		setTodoList(todoList.concat(todoName));
+		axios
+			.post('https://legacy-hooks-udemy.firebaseio.com/todos.json', { name: todoName })
+			.then(res => console.log(res))
+			.catch(err => console.log(err));
 	};
 
 	return (
