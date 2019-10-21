@@ -2,6 +2,7 @@ import React, { useState, useEffect, useReducer, useRef, useMemo } from 'react';
 import axios from 'axios';
 
 import List from '../List/List';
+import { useFormInput } from '../../hooks/forms';
 
 const todoListReducer = (state, action) => {
 	switch (action.type) {
@@ -22,7 +23,8 @@ const Todo = () => {
 	// const [ todoName, setTodoName ] = useState('');
 
 	const [ todoList, dispatch ] = useReducer(todoListReducer, []);
-	const todoInputRef = useRef();
+	// const todoInputRef = useRef();
+	const { value, onChange, validity } = useFormInput();
 
 	useEffect(() => {
 		axios
@@ -40,20 +42,18 @@ const Todo = () => {
 			.catch(err => console.log(err));
 	}, []);
 
-	// const inputChangeHandler = event => {
-	// 	setTodoName(event.target.value);
+	// const inputValiadtionHandler = event => {
+	// 	if (event.target.value.trim() === '') {
+	// 		setInputIsValid(false);
+	// 	} else {
+	// 		setInputIsValid(true);
+	// 	}
 	// };
 
-	const inputValiadtionHandler = event => {
-		if (event.target.value.trim() === '') {
-			setInputIsValid(false);
-		} else {
-			setInputIsValid(true);
-		}
-	};
-
 	const todoAddHandler = () => {
-		const todoName = todoInputRef.current.value;
+		// const todoName = todoInputRef.current.value;
+		const todoName = value;
+		console.log('value', todoName);
 
 		axios
 			.post('https://legacy-hooks-udemy.firebaseio.com/todos.json', { name: todoName })
@@ -81,11 +81,11 @@ const Todo = () => {
 			<input
 				type='text'
 				placeholder='Todo'
-				// value={todoName}
-				// onChange={inputChangeHandler}
-				ref={todoInputRef}
-				onChange={inputValiadtionHandler}
-				style={{ background: inputIsValid ? 'transparent' : 'red' }}
+				// ref={todoInputRef}
+				// onChange={inputValiadtionHandler}
+				onChange={onChange}
+				value={value}
+				style={{ background: validity === true ? 'transparent' : 'red' }}
 			/>
 			<button type='button' onClick={todoAddHandler}>
 				Add
