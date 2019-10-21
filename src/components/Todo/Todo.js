@@ -8,7 +8,7 @@ const todoListReducer = (state, action) => {
 		case 'SET':
 			return action.payload;
 		case 'REMOVE':
-			return state.filter(todo => todo.id !== action.payload.id);
+			return state.filter(todo => todo.id !== action.payloadId);
 
 		default:
 			return state;
@@ -66,13 +66,23 @@ const Todo = () => {
 			.catch(err => console.log(err));
 	};
 
+	const todoRemoveHandler = todoId => {
+		dispatch({ type: 'REMOVE', payloadId: todoId });
+	};
+
 	return (
 		<React.Fragment>
 			<input type='text' placeholder='Todo' value={todoName} onChange={inputChangeHandler} />
 			<button type='button' onClick={todoAddHandler}>
 				Add
 			</button>
-			<ul>{todoList.map(item => <li key={item.id}>{item.name}</li>)}</ul>
+			<ul>
+				{todoList.map(item => (
+					<li key={item.id} onClick={todoRemoveHandler.bind(this, item.id)}>
+						{item.name}
+					</li>
+				))}
+			</ul>
 		</React.Fragment>
 	);
 };
