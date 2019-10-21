@@ -25,10 +25,13 @@ const Todo = () => {
 	};
 
 	const todoAddHandler = () => {
-		setTodoList(todoList.concat(todoName));
 		axios
 			.post('https://legacy-hooks-udemy.firebaseio.com/todos.json', { name: todoName })
-			.then(res => console.log(res))
+			.then(res => {
+				console.log(res);
+				const todoItem = { id: res.data.name, name: todoName };
+				setTodoList(todoList.concat(todoItem));
+			})
 			.catch(err => console.log(err));
 	};
 
