@@ -17,7 +17,7 @@ const todoListReducer = (state, action) => {
 
 const Todo = () => {
 	const [ todoName, setTodoName ] = useState('');
-	const [ submittedTodo, setSubmittedTodo ] = useState(null);
+	// const [ submittedTodo, setSubmittedTodo ] = useState(null);
 	// const [ todoList, setTodoList ] = useState([]);
 
 	const [ todoList, dispatch ] = useReducer(todoListReducer, []);
@@ -38,15 +38,15 @@ const Todo = () => {
 			.catch(err => console.log(err));
 	}, []);
 
-	useEffect(
-		() => {
-			if (submittedTodo) {
-				dispatch({ type: 'ADD', payload: submittedTodo });
-				// setTodoList(todoList.concat(submittedTodo));
-			}
-		},
-		[ submittedTodo ]
-	);
+	// useEffect(
+	// 	() => {
+	// 		if (submittedTodo) {
+	// 			dispatch({ type: 'ADD', payload: submittedTodo });
+	// 			// setTodoList(todoList.concat(submittedTodo));
+	// 		}
+	// 	},
+	// 	[ submittedTodo ]
+	// );
 
 	const inputChangeHandler = event => {
 		setTodoName(event.target.value);
@@ -60,7 +60,8 @@ const Todo = () => {
 				setTimeout(() => {
 					const todoItem = { id: res.data.name, name: todoName };
 					// setTodoList(todoList.concat(todoItem));
-					setSubmittedTodo(todoItem);
+					// setSubmittedTodo(todoItem);
+					dispatch({ type: 'ADD', payload: todoItem });
 				}, 300);
 			})
 			.catch(err => console.log(err));
