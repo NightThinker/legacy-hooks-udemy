@@ -3,6 +3,7 @@ import axios from 'axios';
 
 const Todo = () => {
 	const [ todoName, setTodoName ] = useState('');
+	const [ submittedTodo, setSubmittedTodo ] = useState(null);
 	const [ todoList, setTodoList ] = useState([]);
 
 	useEffect(() => {
@@ -20,6 +21,15 @@ const Todo = () => {
 			.catch(err => console.log(err));
 	}, []);
 
+	useEffect(
+		() => {
+			if (submittedTodo) {
+				setTodoList(todoList.concat(submittedTodo));
+			}
+		},
+		[ submittedTodo ]
+	);
+
 	const inputChangeHandler = event => {
 		setTodoName(event.target.value);
 	};
@@ -29,8 +39,11 @@ const Todo = () => {
 			.post('https://legacy-hooks-udemy.firebaseio.com/todos.json', { name: todoName })
 			.then(res => {
 				console.log(res);
-				const todoItem = { id: res.data.name, name: todoName };
-				setTodoList(todoList.concat(todoItem));
+				setTimeout(() => {
+					const todoItem = { id: res.data.name, name: todoName };
+					// setTodoList(todoList.concat(todoItem));
+					setSubmittedTodo(todoItem);
+				}, 300);
 			})
 			.catch(err => console.log(err));
 	};
