@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useReducer } from 'react';
+import React, { useEffect, useReducer, useRef } from 'react';
 import axios from 'axios';
 
 const todoListReducer = (state, action) => {
@@ -16,11 +16,10 @@ const todoListReducer = (state, action) => {
 };
 
 const Todo = () => {
-	const [ todoName, setTodoName ] = useState('');
-	// const [ submittedTodo, setSubmittedTodo ] = useState(null);
-	// const [ todoList, setTodoList ] = useState([]);
+	// const [ todoName, setTodoName ] = useState('');
 
 	const [ todoList, dispatch ] = useReducer(todoListReducer, []);
+	const todoInputRef = useRef();
 
 	useEffect(() => {
 		axios
@@ -38,29 +37,19 @@ const Todo = () => {
 			.catch(err => console.log(err));
 	}, []);
 
-	// useEffect(
-	// 	() => {
-	// 		if (submittedTodo) {
-	// 			dispatch({ type: 'ADD', payload: submittedTodo });
-	// 			// setTodoList(todoList.concat(submittedTodo));
-	// 		}
-	// 	},
-	// 	[ submittedTodo ]
-	// );
-
-	const inputChangeHandler = event => {
-		setTodoName(event.target.value);
-	};
+	// const inputChangeHandler = event => {
+	// 	setTodoName(event.target.value);
+	// };
 
 	const todoAddHandler = () => {
+		const todoName = todoInputRef.current.value;
+
 		axios
 			.post('https://legacy-hooks-udemy.firebaseio.com/todos.json', { name: todoName })
 			.then(res => {
 				console.log(res);
 				setTimeout(() => {
 					const todoItem = { id: res.data.name, name: todoName };
-					// setTodoList(todoList.concat(todoItem));
-					// setSubmittedTodo(todoItem);
 					dispatch({ type: 'ADD', payload: todoItem });
 				}, 300);
 			})
@@ -78,7 +67,13 @@ const Todo = () => {
 
 	return (
 		<React.Fragment>
-			<input type='text' placeholder='Todo' value={todoName} onChange={inputChangeHandler} />
+			<input
+				type='text'
+				placeholder='Todo'
+				// value={todoName}
+				// onChange={inputChangeHandler}
+				ref={todoInputRef}
+			/>
 			<button type='button' onClick={todoAddHandler}>
 				Add
 			</button>
