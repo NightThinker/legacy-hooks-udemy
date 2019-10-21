@@ -67,7 +67,12 @@ const Todo = () => {
 	};
 
 	const todoRemoveHandler = todoId => {
-		dispatch({ type: 'REMOVE', payloadId: todoId });
+		axios
+			.delete(`https://legacy-hooks-udemy.firebaseio.com/todos/${todoId}.json`)
+			.then(res => {
+				dispatch({ type: 'REMOVE', payloadId: todoId });
+			})
+			.catch(err => console.log(err));
 	};
 
 	return (
