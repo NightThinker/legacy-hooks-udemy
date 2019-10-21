@@ -1,12 +1,16 @@
-import React from 'react';
+import React, { useContext } from 'react';
 
-const header = props => {
+import AuthContext from '../../context/auth-context';
+
+const Header = props => {
 	const { onLoadTodos, onLoadAuth } = props;
+	const auth = useContext(AuthContext);
 	return (
 		<header>
-			<button onClick={onLoadTodos}>Todo List</button> | <button onClick={onLoadAuth}>Auth</button>
+			{auth.status && <button onClick={onLoadTodos}>Todo List</button>}
+			<button onClick={onLoadAuth}>Auth</button>
 		</header>
 	);
 };
 
-export default header;
+export default Header;
